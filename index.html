@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar RI — Painel CASH3</title>
+<style>
+  :root{
+    --bg:#FAF6F7; --surface:#FFFFFF; --surface-2:#F4EEEF; --border:#E7DEE1;
+    --ink:#2A2A2A; --ink-muted:#5C5C5C; --ink-faint:#8C8C8C;
+    --accent:#FF619A; --accent-strong:#E02D6E; --accent-wash:#FFE0EB;
+    --positive:#3E7A52; --negative:#AE4A3C;
+    --radius:6px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#17141A; --surface:#1F1A21; --surface-2:#262029; --border:#372E37;
+      --ink:#F1ECEE; --ink-muted:#A99BA3; --ink-faint:#7A6D75;
+      --accent:#FF619A; --accent-strong:#FDB9D2; --accent-wash:#3A2530;
+      --positive:#5FA97C; --negative:#D07B6C;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Montserrat,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;}
+  .app{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+  @media (max-width:860px){.app{grid-template-columns:1fr;}}
+  .sidebar{background:var(--surface-2);border-right:1px solid var(--border);padding:20px 16px;}
+  .brand{font-weight:700;font-size:1.25rem;}
+  .brand-sub{font-size:0.75rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:20px;}
+  .nav-link{display:block;padding:8px 10px;border-radius:4px;font-size:0.875rem;color:var(--ink-muted);margin-bottom:4px;border-left:2px solid transparent;text-decoration:none;}
+  .nav-link.active{background:var(--surface);color:var(--ink);border-left-color:var(--accent);font-weight:600;}
+  .nav-link.disabled{opacity:.5;cursor:default;}
+  .main{padding:24px 28px;max-width:1400px;}
+  h1{font-size:1.375rem;margin:0;}
+  .topbar-meta{font-size:0.8125rem;color:var(--ink-faint);margin-top:2px;margin-bottom:20px;}
+  .filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .filter-bar label{font-size:0.8125rem;color:var(--ink-muted);}
+  select{font-size:0.8125rem;padding:6px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--ink);}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
+  .stat-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+  .stat-tile .label{font-size:0.6875rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;}
+  .stat-tile .value{font-family:ui-monospace,monospace;font-size:1.375rem;font-weight:600;margin-top:6px;}
+  .stat-tile .delta{font-size:0.75rem;margin-top:4px;}
+  .delta.up{color:var(--positive);} .delta.down{color:var(--negative);} .delta.flat{color:var(--ink-faint);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media (max-width:900px){.grid-2{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);}
+  .card-header{padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;font-size:0.9375rem;}
+  .card-body{padding:14px 16px;}
+  .chart-box{position:relative;height:240px;}
+  table{width:100%;border-collapse:collapse;font-size:0.8125rem;}
+  th{text-align:left;font-size:0.6875rem;text-transform:uppercase;color:var(--ink-faint);padding:8px;border-bottom:1px solid var(--border);}
+  td{padding:7px 8px;border-bottom:1px solid var(--border);}
+  td.num{text-align:right;font-family:ui-monospace,monospace;}
+  tr.group-row td{background:var(--surface-2);color:var(--ink-faint);font-size:0.6875rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;}
+  tr.meliuz-row td{background:var(--accent-wash);font-weight:700;}
+  .ba-pos{color:var(--positive);font-weight:700;}
+  .ba-neg{color:var(--negative);font-weight:700;}
+  .table-wrap{overflow-x:auto;}
+  .empty-state{padding:24px;text-align:center;color:var(--ink-faint);border:1px dashed var(--border);border-radius:var(--radius);}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">Radar RI</div>
+    <div class="brand-sub">Méliuz · CASH3</div>
+    <a class="nav-link active" href="#">Painel CASH3</a>
+    <a class="nav-link disabled" href="#" title="Em construção">Assistente de IA (em breve)</a>
+  </aside>
+  <main class="main">
+    <h1>Painel CASH3 — Visão geral</h1>
+    <div class="topbar-meta">Cotações e volumes sincronizados 1x/dia via GitHub Actions · fonte: planilha Google Sheets (Google Finance) e FRED</div>
+
+    <div id="visao-geral-root">
+      <div class="filter-bar">
+        <label for="kpi-date-select">Ver posição no pregão de</label>
+        <select id="kpi-date-select"></select>
+      </div>
+
+      <div id="kpi-row" class="stat-row"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Evolução CASH3 x IBOV (30 pregões)</div>
+          <div class="card-body"><div class="chart-box"><canvas id="chart-cash3-ibov"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">Evolução CASH3 x BTC (30 pregões)</div>
+          <div class="card-body"><div class="chart-box"><canvas id="chart-cash3-btc"></canvas></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Comparativo com peers</div>
+        <div class="card-body table-wrap">
+          <table>
+            <thead><tr>
+              <th>Empresa</th><th>Ticker</th><th>Preço</th><th>Var. mês</th><th>Var. 12m</th>
+              <th>Mín. 12m</th><th>Máx. 12m</th><th>Vol. médio mês</th><th>Var. mensal vol.</th><th>Market cap</th>
+            </tr></thead>
+            <tbody id="peer-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

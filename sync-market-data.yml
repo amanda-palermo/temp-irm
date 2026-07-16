@@ -1,0 +1,32 @@
+name: Sync market data
+
+on:
+  schedule:
+    # 21:30 UTC = 18:30 em Brasilia (horario padrao, UTC-3), apos o fechamento do pregao.
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch: {} # permite rodar manualmente na aba "Actions" do GitHub
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install --omit=dev
+
+      - name: Run sync
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          SHEET_GID_COTACOES: ${{ secrets.SHEET_GID_COTACOES }}
+          SHEET_GID_ACOES: ${{ secrets.SHEET_GID_ACOES }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: npm run sync
