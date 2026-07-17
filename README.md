@@ -34,8 +34,11 @@ No painel do Supabase: **SQL Editor** → cole e rode, nesta ordem:
    quantidade de ações em circulação da CASH3, usado para calcular o KPI
    "Total de ações em circulação" e o "Valor de mercado" corretamente em
    qualquer data selecionada, não só na mais recente)
+5. `supabase/migrations/0005_ri_documents.sql` (cria as tabelas de documentos
+   e embeddings usadas pelo **Assistente de IA**, ainda em construção —
+   ver `scripts/ingest-ri-documents.mjs`)
 
-Pode rodar de novo sem medo — os quatro arquivos são idempotentes (fazem
+Pode rodar de novo sem medo — os cinco arquivos são idempotentes (fazem
 `upsert`/`update`, não duplicam nada).
 
 ### 2. Descobrir o `gid` da aba "Quantidade de ações para calcular mkt cap"

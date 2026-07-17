@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Radar RI - painel CASH3 (Meliuz) e assistente de IA para relacoes com investidores",
   "scripts": {
-    "sync": "node scripts/sync-market-data.mjs"
+    "sync": "node --env-file-if-exists=.env scripts/sync-market-data.mjs",
+    "ingest": "node --env-file-if-exists=.env scripts/ingest-ri-documents.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4"
