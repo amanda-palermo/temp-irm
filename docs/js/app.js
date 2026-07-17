@@ -634,7 +634,7 @@ function renderForDate(dateIso) {
   const ibovSliced = sliceUpTo(seriesByTicker["IBOV"] ?? [], dateIso);
   const btcSliced = sliceUpTo(seriesByTicker["BTCBRL"] ?? [], dateIso);
   renderComparisonChart("chart-cash3-ibov", cash3Sliced, ibovSliced, "CASH3", "IBOV", chartSecondaryColor(), (v) => Math.round(v).toLocaleString("pt-BR") + " pts");
-  renderComparisonChart("chart-cash3-btc", cash3Sliced, btcSliced, "CASH3", "BTC", "#E08A3C", (v) => fmtPrice(v, "BRL"));
+  renderComparisonChart("chart-cash3-btc", cash3Sliced, btcSliced, "CASH3", "BTC", "#E08A3C", (v) => currencySymbol("BRL") + NBSP + Math.round(v).toLocaleString("pt-BR"));
 
   const dgs5Sliced = sliceUpTo(treasurySeriesById["DGS5"] ?? [], dateIso);
   const dgs10Sliced = sliceUpTo(treasurySeriesById["DGS10"] ?? [], dateIso);
