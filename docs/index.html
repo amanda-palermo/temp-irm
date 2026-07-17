@@ -63,7 +63,8 @@
   .theme-toggle-btn.active{background:var(--accent);color:#fff;font-weight:600;}
   .theme-toggle-btn:not(.active):hover{background:var(--surface-2);color:var(--ink);}
   .main{max-width:1400px;min-width:0;}
-  h1{font-size:1.375rem;margin:0 0 14px;}
+  h1{font-size:1.375rem;margin:0 0 4px;}
+  .page-subtitle{font-size:0.875rem;color:var(--ink-muted);margin:0 0 14px;}
   .page-header{position:sticky;top:0;z-index:10;background:var(--bg);padding:24px 28px 16px;border-bottom:1px solid var(--border);}
   .page-content{padding:20px 28px 28px;}
   .filter-bar{display:flex;align-items:center;gap:10px;}
@@ -94,7 +95,7 @@
   .ba-neg{color:var(--negative);font-weight:700;}
   .table-wrap{overflow-x:auto;}
   .table-note{font-size:0.75rem;color:var(--ink-faint);font-style:italic;margin:10px 0 0;}
-  .table-note-top{padding:12px 16px 0;margin:0;}
+  .table-note-bottom{padding:0 16px 14px;margin:0;}
   .empty-state{padding:24px;text-align:center;color:var(--ink-faint);border:1px dashed var(--border);border-radius:var(--radius);}
   thead tr:first-child th{text-align:center;}
   thead tr:first-child th:first-child, thead tr:first-child th:nth-child(2){text-align:left;}
@@ -129,6 +130,7 @@
     <section id="view-painel" class="view">
     <div class="page-header">
       <h1>Painel CASH3 — Visão geral</h1>
+      <p class="page-subtitle">Informações da base acionária CASH3, atualizado diariamente.</p>
       <div class="filter-bar">
         <label for="kpi-date-select">Ver posição no pregão de</label>
         <input type="date" id="kpi-date-select">
@@ -157,7 +159,6 @@
 
         <div class="card">
           <div class="card-header">Comparativo com peers</div>
-          <p class="table-note table-note-top">O traço ("—") na coluna <strong>Valor</strong> indica que o ativo ainda não tinha aberto capital (IPO) na data selecionada. Traços em outras colunas podem ter outros motivos: histórico insuficiente até a data selecionada para calcular variação ou a faixa de 12 meses, ou os campos Vol. médio mês e Market cap não se aplicam (caso do US 5Y e US 10Y, que são taxas, e de índices e câmbio como IBOV, IXIC, USD/BRL e EUR/BRL, que também não são ativos negociáveis com volume ou valor de mercado).</p>
           <div class="card-body table-wrap">
             <table>
               <thead>
@@ -172,6 +173,7 @@
               <tbody id="peer-table-body"></tbody>
             </table>
           </div>
+          <p class="table-note table-note-bottom">O traço ("—") na coluna <strong>Valor</strong> indica que o ativo ainda não tinha aberto capital (IPO) na data selecionada. Traços em outras colunas podem ter outros motivos: histórico insuficiente até a data selecionada para calcular variação ou a faixa de 12 meses, ou os campos Vol. médio mês e Market cap não se aplicam (caso do US 5Y e US 10Y, que são taxas, e de índices e câmbio como IBOV, IXIC, USD/BRL e EUR/BRL, que também não são ativos negociáveis com volume ou valor de mercado).</p>
         </div>
 
         <div class="card">
